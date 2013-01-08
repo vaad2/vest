@@ -1,0 +1,219 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-11-12 15:58+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+
+#: .\common\models.py:42
+msgid "state"
+msgstr "статус"
+
+#: .\common\models.py:43 .\common\models.py:181
+msgid "pos"
+msgstr "позиция"
+
+#: .\common\models.py:52 .\common\models.py:61
+msgid "user"
+msgstr ""
+
+#: .\common\models.py:71
+msgid "site"
+msgstr ""
+
+#: .\common\models.py:85 .\common\models.py:134 .\common\models.py:164
+#: .\common\models.py:204
+msgid "name"
+msgstr "имя"
+
+#: .\common\models.py:86 .\common\models.py:180 .\common\models.py:203
+#: .\common\models.py:329
+msgid "title"
+msgstr "заголовок"
+
+#: .\common\models.py:90 .\common\models.py:98
+msgid "site theme"
+msgstr "тема шаблона"
+
+#: .\common\models.py:91
+msgid "site themes"
+msgstr "темы шаблона"
+
+#: .\common\models.py:97 .\common\models.py:103 .\common\models.py:110
+#: .\common\models.py:330
+msgid "site template"
+msgstr "шаблон страницы"
+
+#: .\common\models.py:99 .\common\models.py:332
+msgid "content"
+msgstr "содержание"
+
+#: .\common\models.py:104
+msgid "site templates"
+msgstr "шаблоны страниц"
+
+#: .\common\models.py:120 .\common\models.py:124 .\common\models.py:127
+#: .\common\models.py:131
+#, fuzzy
+msgid "file"
+msgstr "заголовок"
+
+#: .\common\models.py:135
+msgid "value"
+msgstr "значение"
+
+#: .\common\models.py:136
+msgid "text value"
+msgstr "значение текст"
+
+#: .\common\models.py:137 .\common\models.py:173
+msgid "description"
+msgstr "описание"
+
+#: .\common\models.py:143
+msgid "site setting"
+msgstr "настройки сайта"
+
+#: .\common\models.py:144
+msgid "site settings"
+msgstr "настройки сайта"
+
+#: .\common\models.py:165
+msgid "from email"
+msgstr "email от"
+
+#: .\common\models.py:166
+msgid "Subject"
+msgstr "тема"
+
+#: .\common\models.py:167
+msgid "recipients"
+msgstr "получатели"
+
+#: .\common\models.py:168
+msgid "html content"
+msgstr "содержание html"
+
+#: .\common\models.py:169
+msgid "text content"
+msgstr "содержание текст"
+
+#: .\common\models.py:175
+msgid "mail template"
+msgstr "шаблон письма"
+
+#: .\common\models.py:176
+msgid "mail templates"
+msgstr "шаблоны писем"
+
+#: .\common\models.py:182
+msgid "primary"
+msgstr ""
+
+#: .\common\models.py:205
+msgid "url"
+msgstr "url"
+
+#: .\common\models.py:206
+msgid "parent"
+msgstr "родитель"
+
+#: .\common\models.py:207
+msgid "level"
+msgstr "уровень"
+
+#: .\common\models.py:208
+msgid "path"
+msgstr "путь"
+
+#: .\common\models.py:210
+msgid "inner pos"
+msgstr "вн. позиция"
+
+#: .\common\models.py:216 .\common\models.py:217
+msgid "tree"
+msgstr "деоево"
+
+#: .\common\models.py:318
+msgid "top"
+msgstr "верх"
+
+#: .\common\models.py:319
+msgid "bottom"
+msgstr "низ"
+
+#: .\common\models.py:320
+msgid "left"
+msgstr "лево"
+
+#: .\common\models.py:321
+msgid "right"
+msgstr "парво"
+
+#: .\common\models.py:322
+msgid "free"
+msgstr "св-но"
+
+#: .\common\models.py:323
+msgid "all"
+msgstr "все"
+
+#: .\common\models.py:334
+msgid "is content template"
+msgstr "это шаблон"
+
+#: .\common\models.py:336
+msgid "navigation position"
+msgstr "позиция нав."
+
+#: .\common\models.py:337
+msgid "content position"
+msgstr "позиция сод."
+
+#: .\common\models.py:339
+msgid "nav title"
+msgstr "нав. заголовок"
+
+#: .\common\models.py:340
+msgid "nav show"
+msgstr "нав. показывать"
+
+#: .\common\models.py:342
+msgid "extra pos"
+msgstr "позиция доп."
+
+#: .\common\models.py:344
+msgid "seo keywords"
+msgstr "сео кл.слова"
+
+#: .\common\models.py:345
+msgid "seo description"
+msgstr "сео описание"
+
+#: .\common\models.py:346
+msgid "seo title"
+msgstr "сео заголовок"
+
+#: .\common\models.py:352
+msgid "simple page"
+msgstr "простая страница"
+
+#: .\common\models.py:353
+msgid "simple pages"
+msgstr "простые страницы"
+
+#~ msgid "ex site template"
+#~ msgstr "шаблон страницы"

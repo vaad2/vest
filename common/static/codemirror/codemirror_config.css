@@ -1,0 +1,26 @@
+.CodeMirror {
+   border: 1px solid #eee;
+   background: #fff;
+   max-width: 746px;
+ }
+ .CodeMirror-scroll {
+   /*height: auto;*/
+   max-height: 800px;
+   /*overflow-y: hidden;*/
+     overflow-y:auto;
+   overflow-x: auto;
+   /*width: 100%;*/
+   max-width: 746px;
+   background: #fff;
+ }
+
+.CodeMirror-fullscreen {
+  height: auto;
+  max-height: none;
+  /*overflow-y: hidden;*/
+  /*overflow-y:auto;*/
+  /*overflow-x: auto;*/
+  /*width: 100%;*/
+  max-width: none;
+  background: #fff;
+}

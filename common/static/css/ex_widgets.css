@@ -1,0 +1,17 @@
+.ex-image-form-field .block-initial {
+    /*display: block;*/
+    padding-bottom: 6px;
+    /*clear: both;*/
+    overflow: hidden;
+    padding-right: 6px;
+}
+
+.ex-image-form-field .block-inputs {
+
+}
+.ex-image-form-field .block-initial .image
+{
+    margin: 2px;
+    padding: 2px;
+    border: 1px solid #ccc;
+}

@@ -1,0 +1,6 @@
+{% for simple_page in sps %}
+  {{ simple_page.content|safe }}
+  {%  for image in simple_page.image.all  %}
+    <a rel="group" href="{{ image.image.url }}" title="{{ image.description }}" class="preview"><img src="{{ image.thumb_m.url }}" alt="{{ image.description }}"/></a>
+  {% endfor %}
+{% endfor %}
