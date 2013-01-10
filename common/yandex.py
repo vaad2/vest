@@ -96,27 +96,40 @@ class YMLGenerator(object):
         for offer in offers:
             cnt +=1
 
+#            <price>699.54</price>
+#<currencyId>USD</currencyId>
+#<categoryId>6</categoryId>
+#<picture>http://best.seller.ru/img/device12345.jpg</picture>
+#<delivery>false</delivery>
+#<local_delivery_cost>300</local_delivery_cost>
+#<name>Золотые наручные часы </name>
+#<vendor>Longines</vendor>
+#<vendorCode>A1234567B</vendorCode>
+#<description>Изящные золотые часы.</description>
+#<country_of_origin>Швейцария</country_of_origin>
+
             #required
             self._write('<offer available="%(available)s" id="%(id)s">' % offer)
             self._write('<url>%(url)s</url>' % offer)
             self._write('<price>%s</price>' % offer['price'])
             self._write('<currencyId>%s</currencyId>' % offer['currencyId'])
             self._write('<categoryId>%s</categoryId>' % offer['categoryId'])
-            self._write('<name>%s</name>' % offer['name'])
-            #no required
-
             if 'picture' in offer and len(offer['picture']):
                 if isinstance(offer['picture'], list):
                     for picture in offer['picture']:
                         self._write('<picture>%s</picture>', picture)
                 else:
                     self._write_if('picture', offer)
+            self._write_if('delivery', offer)
+            self._write('<name>%s</name>' % offer['name'])
+            #no required
 
+            self._write_if('vendor', offer)
             self._write_if('store', offer)
             self._write_if('pickup', offer)
-            self._write_if('delivery', offer)
+
             self._write_if('local_delivery_cost', offer)
-            self._write_if('vendor', offer)
+
             self._write_if('vendorCode', offer)
             self._write_if('description', offer)
             self._write_if('sales_notes', offer)
