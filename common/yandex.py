@@ -131,7 +131,7 @@ class YMLGenerator(object):
                     else:
                         self._write('<param name="%s">%s</param>' % (key, val))
 
-                        #            self._write_if('param', offer)
+                        #            self._write_ if('param', offer)
             self._write('</offer>')
         self._write('</offers>')
 
@@ -153,10 +153,13 @@ class YMLGenerator(object):
 
             import logging
             log = logging.getLogger('file_logger')
-            log.log(logging.DEBUG, exception_details())
+            ed = unicode(exception_details())
+            log.log(logging.DEBUG, ed)
 
+            return { 'success' : False, 'error' : ed }
         finally:
             self.file.close()
+        return { 'success' : True }
 
 def yml_validate(file):
     from lxml import etree, objectify
