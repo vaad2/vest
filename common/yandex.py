@@ -145,7 +145,6 @@ class YMLGenerator(object):
             self._write_currency(kwargs['currencies'])
             self._write_categories(kwargs['categories'])
             self._write_offers(kwargs['offers'])
-
             self._close_shop()
             self._close_catalog()
         except BaseException, e:
