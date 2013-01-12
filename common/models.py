@@ -104,7 +104,7 @@ class SiteTemplate(AbstractUserSiteDefaultModel):
         verbose_name_plural = _('site templates')
 
     def __unicode__(self):
-        return '%s - %s' % (unicode(self.site_theme), self.name)
+        return '%s - %s' % (unicode(self.site_theme), self.name) if self.site_theme else self.name
 
 class AbstractFile(AbstractDefaultModel, AbstractUserModel):
     site_template = models.ForeignKey(SiteTemplate, verbose_name = _('site template'))
