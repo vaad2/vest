@@ -224,6 +224,57 @@ def ex_find_template(name, exclude = [], dirs=None):
 first_cap_re = re.compile('(.)([A-Z][a-z]+)')
 all_cap_re = re.compile('([a-z0-9])([A-Z])')
 def camel_to_underline(name):
-    s1 = first_cap_re.sub(r'\1_\2', name)
+    s1 = first_cap_re.sube(r'\1_\2', name)
     return all_cap_re.sub(r'\1_\2', s1).lower()
 
+class SiteMapGenerator(object):
+
+    def _write_header(self):
+        self.file.write('''<?xml version="1.0" encoding="UTF-8"?>''')
+
+    def _open_urlset(self):
+        self.file.write('''<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">''')
+
+    def _close_urlset(self):
+        self.file.write('</urlset>')
+
+    def _write_urls(self, urls):
+        for url in urls:
+            self.file.write('<url>')
+            self.file.write('<loc>%(loc)s</loc>' % url)
+            self.file.write('<changefreq>%(changefreq)s</changefreq>' % url)
+            self.file.write('<priority>%(priority)s</priority>' % url)
+            self.file.write('</url>')
+    def generate(self, path, **kwargs):
+        try:
+            self.file = open(path, 'w+')
+            self._write_header()
+            self._open_urlset()
+            self._write_urls(kwargs['urls'])
+            self._close_urlset()
+
+        except BaseException, e:
+            from common.std import exception_details
+
+            import logging
+            log = logging.getLogger('file_logger')
+            ed = unicode(exception_details())
+            log.log(logging.DEBUG, ed)
+
+            return { 'success' : False, 'error' : ed }
+        finally:
+            self.file.close()
+        return { 'success' : True }
+
+#<?xml version="1.0" encoding="UTF-8"?>
+#<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+#{% for item in items %}
+#{% if item.url|first == '/' %}
+#<url>
+#<loc>{{ item.url }}</loc>
+#<changefreq>weekly</changefreq>
+#<priority>1</priority>
+#</url>
+#{% endif %}
+#{% endfor %}
+#</urlset>
