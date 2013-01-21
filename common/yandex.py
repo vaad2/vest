@@ -80,7 +80,10 @@ class YMLGenerator(object):
     def _write_categories(self, categories):
         self._write('<categories>')
         for category in categories:
-            self._write('<category id="%(id)s" parentId="%(parentId)s">%(title)s</category>' % category)
+            if not category['parentId']:
+                self._write('<category id="%(id)s">%(title)s</category>' % category)
+            else:
+                self._write('<category id="%(id)s" parentId="%(parentId)s">%(title)s</category>' % category)
         self._write('</categories>')
 
     def _write_local_delivery_cost(self, local_delivery_cost):

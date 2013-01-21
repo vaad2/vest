@@ -153,7 +153,7 @@ def md5_for_file(f, block_size=2**20):
 def model_class_get(path):
     from django.db.models import get_model
     arr = path.split('.')
-    return get_model(arr[0], arr[-1])
+    return get_model(arr[0], arr[1])
 
 def model_object_get(path, pk):
     cls = model_class_get(path)
@@ -224,7 +224,7 @@ def ex_find_template(name, exclude = [], dirs=None):
 first_cap_re = re.compile('(.)([A-Z][a-z]+)')
 all_cap_re = re.compile('([a-z0-9])([A-Z])')
 def camel_to_underline(name):
-    s1 = first_cap_re.sube(r'\1_\2', name)
+    s1 = first_cap_re.sub(r'\1_\2', name)
     return all_cap_re.sub(r'\1_\2', s1).lower()
 
 class SiteMapGenerator(object):
