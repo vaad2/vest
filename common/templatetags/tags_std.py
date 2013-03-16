@@ -101,11 +101,13 @@ def include_raw(parser, token):
     source, path = Loader().load_template_source(template_name, None)
     return template.TextNode(source)
 
+
 import inspect
+
+
 def default_context_init(context, *args, **kwargs):
     name = inspect.stack()[1][3]
-    sub_context = {}
-    sub_context['limit'] = args[0]
+    sub_context = {'limit': args[0]}
 
     if 'qset' in kwargs:
         if isinstance(kwargs['qset'], basestring):
@@ -124,6 +126,7 @@ def default_context_init(context, *args, **kwargs):
     context[name] = sub_context
     return context
 
+
 @register.simple_tag(takes_context=True)
 def tag_list(context, *args, **kwargs):
     default_context_init(context, *args, **kwargs)
@@ -131,7 +134,7 @@ def tag_list(context, *args, **kwargs):
     return render_to_string(kwargs['template_name'], context)
 
 
-@register.simple_tag(takes_context = True)
+@register.simple_tag(takes_context=True)
 def tag_list_random(context, *args, **kwargs):
     default_context_init(context, *args, **kwargs)
     cnt = context['tag_list_random']['qset'].count()
@@ -141,6 +144,6 @@ def tag_list_random(context, *args, **kwargs):
     rnd = random.sample(xrange(cnt), limit)
     qset = []
     for ofs in rnd:
-        qset.append(context['tag_list_random']['qset'][ofs:ofs+1][0])
+        qset.append(context['tag_list_random']['qset'][ofs:ofs + 1][0])
 
     return render_to_string(kwargs['template_name'], context)

@@ -2,7 +2,8 @@ import json
 from bson.objectid import ObjectId
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
-from django.utils.simplejson.encoder import JSONEncoder
+from json import JSONEncoder
+# from django.utils.simplejson.encoder import JSONEncoder
 
 class MongoEncoder(JSONEncoder):
     def default(self, obj, **kwargs):
