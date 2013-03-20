@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from time import strftime, localtime
+import logging
+
 '''
 
 def yml_categories():
@@ -117,12 +119,17 @@ class YMLGenerator(object):
             self._write('<price>%s</price>' % offer['price'])
             self._write('<currencyId>%s</currencyId>' % offer['currencyId'])
             self._write('<categoryId>%s</categoryId>' % offer['categoryId'])
-            if 'picture' in offer and len(offer['picture']):
-                if isinstance(offer['picture'], list):
-                    for picture in offer['picture']:
-                        self._write('<picture>%s</picture>', picture)
-                else:
-                    self._write_if('picture', offer)
+            try:
+                if 'picture' in offer and len(offer['picture']):
+                    if isinstance(offer['picture'], list):
+                        for picture in offer['picture']:
+                            self._write('<picture>%s</picture>', picture)
+                    else:
+                        self._write_if('picture', offer)
+            except BaseException, e:
+                log = logging.getLogger('file_logger')
+                log.debug(e)
+
             self._write_if('delivery', offer)
             self._write('<name>%s</name>' % offer['name'])
             #no required
@@ -166,10 +173,10 @@ class YMLGenerator(object):
         except BaseException, e:
             from common.std import exception_details
 
-            import logging
+
             log = logging.getLogger('file_logger')
             ed = unicode(exception_details())
-            log.log(logging.DEBUG, ed)
+            log.log(logging.DEBUG,  'error %s %s' % (e, ed))
 
             return { 'success' : False, 'error' : ed }
         finally:

@@ -240,12 +240,14 @@ def ex_find_template(name, exclude=[], dirs=None):
             pass
     raise TemplateDoesNotExist(name)
 
+
 def file_exists(path):
     try:
         with open(path) as f:
             return True
     except IOError as e:
         return None
+
 
 def template_to_source():
     import codecs
