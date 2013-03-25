@@ -12,49 +12,40 @@ import random
 register = Library()
 
 
-@register.tag(name='tag_simple_page')
-def tag_simple_page(parser, token):
-    args = token.split_contents()
+@register.simple_tag(takes_context=True)
+def tag_simple_page(context, *args, **kwargs):
+    #collect params
+    template_name = kwargs.get('template_name', 'common/tag_simple_page.html')
+    position_nav_mask = kwargs.get('position_nav_mask', 15)
+    position_content_mask = kwargs.get('position_content_mask', 15)
+    extra_pos = kwargs.get('extra_pos', 0)
+
+    #old version
     la = len(args)
-    template_name = 'tag_simple_page.html'
-    position_nav_mask = 15
-    position_content_mask = 15
-    extra_pos = 0
-
+    if la > 0:
+        position_content_mask = args[0]
     if la > 1:
-        position_content_mask = args[1]
-    if la > 2:
-        position_nav_mask = args[2]
-    if la > 3 and len(args[3]) > 0:
-        template_name = args[3]
-    if la > 4:
-        extra_pos = args[4]
-
-    return TagSimplePageNode(position_content_mask, position_nav_mask, template_name, extra_pos)
+        position_nav_mask = args[1]
+    if la > 2 and len(args[2]) > 0:
+        template_name = args[2]
+    if la > 3:
+        extra_pos = args[3]
 
 
-class TagSimplePageNode(template.Node):
-    def __init__(self, position_content_mask, position_nav_mask, template_name, extra_pos):
-        self.position_nav_mask = int(position_nav_mask)
-        self.position_content_mask = int(position_content_mask)
-        self.template_name = template_name
-        self.extra_pos = extra_pos
+    request = context['request']
+    sps = []
 
-    def render(self, context):
-        request = context['request']
-        sps = []
+    if hasattr(request, 'simple_page') and request.simple_page:
+        for sp in request.simple_page:
+            if sp.position_nav & position_nav_mask > 0 and sp.position_content & position_content_mask > 0 and sp.extra_pos == extra_pos:
+                if sp.is_content_template:
+                    t = Template(sp.content)
+                    c = Context({'request': request})
+                    sp.content = t.render(c)
 
-        if hasattr(request, 'simple_page') and request.simple_page:
-            for sp in request.simple_page:
-                if sp.position_nav & self.position_nav_mask > 0 and sp.position_content & self.position_content_mask > 0 and sp.extra_pos == self.extra_pos:
-                    if sp.is_content_template:
-                        t = Template(sp.content)
-                        c = Context({'request': request})
-                        sp.content = t.render(c)
+                sps.append(sp)
 
-                    sps.append(sp)
-
-        return render_to_string(self.template_name, {'sps': sps})
+    return render_to_string(template_name, {'sps': sps}, context_instance=context)
 
 
 @register.filter
