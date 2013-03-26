@@ -54,6 +54,7 @@ class YMLGenerator(object):
     def _open_catalog(self):
         self._write(strftime('<yml_catalog date="%Y-%m-%d %H:%M">', localtime()))
     def _close_catalog(self):
+        print 'close'
         self._write('</yml_catalog>')
         #1
     def _open_shop(self, info):
@@ -93,7 +94,10 @@ class YMLGenerator(object):
 
     def _write_if(self, key, item):
         if key in item:
-            self._write('<%s>%s</%s>' % (key, item[key], key))
+            try:
+                self._write('<%s>%s</%s>' % (key, item[key], key))
+            except BaseException, e:
+                print item[key]
 
     def _write_offers(self, offers):
         self._write('<offers>')
@@ -160,7 +164,7 @@ class YMLGenerator(object):
 
 
     def generate(self, path, **kwargs):
-        try:
+        # try:
             self.file = open(path, 'w+')
             self._write_header()
             self._open_catalog()
@@ -170,18 +174,18 @@ class YMLGenerator(object):
             self._write_offers(kwargs['offers'])
             self._close_shop()
             self._close_catalog()
-        except BaseException, e:
-            from common.std import exception_details
-
-
-            log = logging.getLogger('file_logger')
-            ed = unicode(exception_details())
-            log.log(logging.DEBUG,  'error %s %s' % (e, ed))
-
-            return { 'success' : False, 'error' : ed }
-        finally:
+        # except BaseException, e:
+        #     from common.std import exception_details
+        #
+        #
+        #     log = logging.getLogger('file_logger')
+        #     ed = unicode(exception_details())
+        #     log.log(logging.DEBUG,  'error %s %s' % (e, ed))
+        #
+        #     return { 'success' : False, 'error' : ed }
+        # finally:
             self.file.close()
-        return { 'success' : True }
+            return { 'success' : True }
 
 def yml_validate(file):
     from lxml import etree, objectify

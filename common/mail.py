@@ -22,8 +22,8 @@ def mail_template_send(cls, name, context = {}, skip_site_checking = False):
 
         if hasattr(tpl, 'text_content'):
             #process old version
-            text = Template(template_text).render(c)
-            html = Template(template_html).render(c)
+            text = Template(tpl.text_content).render(c)
+            html = Template(tpl.html_content).render(c)
 
         else:
             #process site template based version
