@@ -346,7 +346,7 @@ class AbstractTree(AbstractUserSiteDefaultModel):
             if not include_self:
                 qset = qset.exclude(pk=self.pk)
             return qset
-        return None
+        return []
 
     def __unicode__(self):
         return '%s%s' % ('..' * self.level, self.title)
