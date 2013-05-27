@@ -47,7 +47,7 @@ class UserSiteDefaultManager(UserSiteManager):
 class AbstractDefaultModel(models.Model):
     state = models.BooleanField(verbose_name=_('state'), default=True)
     pos = models.PositiveIntegerField(verbose_name=_('pos'), default=0)
-    since = models.DateTimeField(auto_now_add=True)
+    since = models.DateTimeField(auto_now_add=True, verbose_name=_('since'))
     objects = models.Manager()
     active_objects = DefaultManger()
 
@@ -363,7 +363,7 @@ CHOICES_PAGE_POS = (
 
 
 class AbstractSimplePage(AbstractUserSiteDefaultModel):
-    url = models.CharField(max_length=255)
+    url = models.CharField(max_length=255, null=True, blank=True)
     title = models.CharField(_('title'), max_length=255)
     site_template = models.ForeignKey('SiteTemplate', verbose_name=_('site template'), null=True, blank=True)
 

@@ -37,7 +37,7 @@ class ViewDefault(TemplateView):
         sp = request.simple_page
         if sp:
             context = self.get_context_data(**kwargs)
-            context['simple_page'] = sp[0]
+            context['simple_pange'] = sp[0]
 
             if sp[0].site_template:
                 return render(request, sp[0].site_template.name, context)

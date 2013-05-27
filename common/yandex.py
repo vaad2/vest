@@ -127,7 +127,7 @@ class YMLGenerator(object):
                 if 'picture' in offer and len(offer['picture']):
                     if isinstance(offer['picture'], list):
                         for picture in offer['picture']:
-                            self._write('<picture>%s</picture>', picture)
+                            self._write('<picture>%s</picture>' % picture)
                     else:
                         self._write_if('picture', offer)
             except BaseException, e:

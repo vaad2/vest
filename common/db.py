@@ -1,6 +1,7 @@
 from thread_locals import get_thread_var, set_thread_var
 from django.utils.datastructures import SortedDict
 
+
 def mongo_get(collection = None):
     from django.conf import settings
     from pymongo import Connection
@@ -15,6 +16,39 @@ def mongo_get(collection = None):
             return connection[collection._meta.db_table]
         return connection[collection]
 
+    return connection
+
+
+#elasticsearch get
+def es_get():
+    from pyelasticsearch import ElasticSearch
+    from django.conf import settings
+    connection = get_thread_var('es_connetion')
+
+    if not connection:
+        connection = ElasticSearch('http://%s:%s/' % (settings.ES['default']['HOST'], settings.ES['default']['PORT']))
+        set_thread_var('es_connetion', connection)
+
+    return connection
+
+def es_utils_get(doctypes=None):
+       # basic_s = S().es(urls=[URL]).indexes(INDEX).doctypes(DOCTYPE)
+    from django.conf import settings
+    connection = get_thread_var('es_utils_connetion')
+
+    if not connection:
+
+        from elasticutils import S
+
+        # s = S().indexes('dbvestlitecms').doctypes('product')
+
+        connection = S().es(hosts=['%s:%s' % (settings.ES['default']['HOST'], settings.ES['default']['PORT'])]).indexes(settings.ES['default']['NAME'])
+
+        # ElasticSearch('%s:%s/' % (settings.ES['default']['HOST'], settings.ES['default']['PORT']))
+        set_thread_var('es_utils_connetion', connection)
+
+    if doctypes:
+        return connection.doctypes(doctypes)
     return connection
 
 
