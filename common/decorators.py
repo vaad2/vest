@@ -15,7 +15,11 @@ def json_handler_decorator_dispatch(**dkwargs):
 
                 try:
                     handler = getattr(self, 'cmd_%s' % request.REQUEST['cmd'].lower())
-                    return handler(request, *args, **kwargs)
+                    result = handler(request, *args, **kwargs)
+                    if 'post_process' in dkwargs:
+                        result = dkwargs['post_process'](self, result, request, *args, **kwargs)
+
+                    return result
                 except Exception, exception:
                     raise Exception(exception)
             else:

@@ -1,15 +1,19 @@
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.core.urlresolvers import resolve
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
+from django.template.response import TemplateResponse
 from django.views.generic.base import TemplateView, View
 from django.views.generic.list import MultipleObjectMixin
+from common.decorators import json_handler_decorator_dispatch
+from common.http import json_response
+from common.std import camel_to_underline
 from models import SiteSettings
 from django.db.models.query import QuerySet
 from django.utils.safestring import mark_safe
 import math, json, urllib
 from django.utils.encoding import smart_str
-
 
 
 class ViewDefault(TemplateView):
@@ -37,13 +41,14 @@ class ViewDefault(TemplateView):
         sp = request.simple_page
         if sp:
             context = self.get_context_data(**kwargs)
-            context['simple_pange'] = sp[0]
+            context['simple_page'] = sp[0]
 
             if sp[0].site_template:
                 return render(request, sp[0].site_template.name, context)
 
             return self.render_to_response(context)
         raise Http404
+
 
 class ViewRobots(View):
     def dispatch(self, request, *args, **kwargs):
@@ -53,26 +58,25 @@ class ViewRobots(View):
 class ExPaginator(object):
     def __init__(self,
                  num_rows,
-                 offset = 0,
-                 limit = 10,
-                 view_num = 11,
-                 splitter = '...',
-                 view_one_page = False,
-                 min_limit = 10,
-                 max_limit = 50,
-                 name_offset = 'offset',
-                 name_limit = 'limit',
-                 request = None,
-                 map_page = None,
-                 params = None ):
+                 offset=0,
+                 limit=10,
+                 view_num=11,
+                 splitter='...',
+                 view_one_page=False,
+                 min_limit=10,
+                 max_limit=50,
+                 name_offset='offset',
+                 name_limit='limit',
+                 request=None,
+                 map_page=None,
+                 params=None):
 
         self.num_rows = num_rows
-
 
         if request:
             try:
                 offset = int(request.REQUEST.get(name_offset, offset))
-                limit =  int(request.COOKIES.get(name_limit, limit))
+                limit = int(request.COOKIES.get(name_limit, limit))
             except Exception, exception:
                 pass
 
@@ -87,13 +91,12 @@ class ExPaginator(object):
 
         self.num_rows = num_rows
 
-
         self.offset = offset
         self.limit = limit
         self.view_num = view_num
         self.splitter = splitter
         self.view_one_page = view_one_page
-        self.num_pages = int(math.ceil( float(num_rows) / limit))
+        self.num_pages = int(math.ceil(float(num_rows) / limit))
         self.curr_page = int(math.ceil(offset / limit))
         self.view_one_page = view_one_page
 
@@ -115,7 +118,6 @@ class ExPaginator(object):
         self.next_page += 1
         self.prev_page += 1
 
-
         self.name_offset = name_offset
         self.name_limit = name_limit
         self.map_page = map_page
@@ -127,7 +129,7 @@ class ExPaginator(object):
         self.params = params
 
         if self.params:
-            self.params_json = ',%s' % json.dumps(self.params, sort_keys = True, indent = 2)[1:-1]
+            self.params_json = ',%s' % json.dumps(self.params, sort_keys=True, indent=2)[1:-1]
             items = {}
             for key, val in self.params.iteritems():
                 if isinstance(val, str) or isinstance(val, unicode):
@@ -148,10 +150,9 @@ class ExPaginator(object):
         self.page_range = self._get_page_range()
 
 
-
     def _get_page_range(self):
         num_pages = self.num_pages
-        splitter = { 'is_splitter' : True, 'splitter' : self.splitter }
+        splitter = {'is_splitter': True, 'splitter': self.splitter}
         view_num = self.view_num
         curr_page = self.curr_page
         limit = self.limit
@@ -163,14 +164,14 @@ class ExPaginator(object):
             df = self.view_num / 2
             pages = []
             if curr_page <= df:
-                pages.extend([[i, (i - 1) * limit] for i in xrange(1, view_num )])
+                pages.extend([[i, (i - 1) * limit] for i in xrange(1, view_num)])
                 pages.append(splitter)
             elif curr_page >= num_pages - df:
                 pages.append([1, 0])
                 pages.append(splitter)
                 #pages.extend(range(num_pages - viewed_num + 2, num_pages ))
 
-                pages.extend([[i, (i - 1) * limit] for i in xrange(num_pages - view_num + 2, num_pages )])
+                pages.extend([[i, (i - 1) * limit] for i in xrange(num_pages - view_num + 2, num_pages)])
 
             else:
                 pages.append([1, 0])
@@ -179,10 +180,8 @@ class ExPaginator(object):
                     #                pages.extend(range(curr_page - df + 1, curr_page + df))
                 pages.extend([[i, (i - 1) * limit] for i in xrange(curr_page - df + 1, curr_page + df)])
 
-
                 if curr_page != num_pages - df:
                     pages.append(splitter)
-
 
             pages.append([num_pages, (num_pages - 1) * limit])
 
@@ -198,10 +197,11 @@ class ExPaginator(object):
 class ExMultipleObjectMixin(MultipleObjectMixin):
     view_num = 10
     query_params = {}
+
     def get_view_num(self):
         return self.view_num
 
-    def get_context_object_name(self, object_list = None):
+    def get_context_object_name(self, object_list=None):
         """
         Get the name of the item to be used in the context.
         """
@@ -212,18 +212,19 @@ class ExMultipleObjectMixin(MultipleObjectMixin):
         else:
             return 'object_list'
 
-    def get_paginator(self, queryset, per_page, orphans=0, allow_empty_first_page=True, params = None):
+    def get_paginator(self, queryset, per_page, orphans=0, allow_empty_first_page=True, params=None):
         return ExPaginator(queryset.count(),
-            request = self.request,
-            max_limit = per_page,
-            limit = per_page,
-            view_num = self.get_view_num(),
-            splitter = mark_safe('<span>...</span>'),
-            params = params)
+                           request=self.request,
+                           max_limit=per_page,
+                           limit=per_page,
+                           view_num=self.get_view_num(),
+                           splitter=mark_safe('<span>...</span>'),
+                           params=params)
 
-    def paginate_queryset(self, queryset, page_size, params = None):
+    def paginate_queryset(self, queryset, page_size, params=None):
     #        paginator = self.get_paginator(queryset, page_size, allow_empty_first_page=self.get_allow_empty())
-        paginator = self.get_paginator(queryset, page_size, allow_empty_first_page=self.get_allow_empty(), params = params)
+        paginator = self.get_paginator(queryset, page_size, allow_empty_first_page=self.get_allow_empty(),
+                                       params=params)
         return paginator, None, queryset[paginator.offset: paginator.offset + paginator.limit], paginator.num_rows > 1
 
     def get_context_data(self, **kwargs):
@@ -238,24 +239,92 @@ class ExMultipleObjectMixin(MultipleObjectMixin):
             if not len(self.query_params):
                 self.query_params = dict(self.request.REQUEST)
 
-            paginator, page, queryset, is_paginated = self.paginate_queryset(queryset, page_size, params = kwargs.get('params', self.query_params))
+            paginator, page, queryset, is_paginated = self.paginate_queryset(queryset, page_size,
+                                                                             params=kwargs.get('params',
+                                                                                               self.query_params))
             context = {
                 'paginator': paginator,
                 'page_obj': page,
                 'is_paginated': is_paginated,
-                 context_object_name : queryset,
-                 'object_list' : queryset
+                context_object_name: queryset,
+                'object_list': queryset
             }
         else:
             context = {
                 'paginator': None,
                 'page_obj': None,
                 'is_paginated': False,
-                context_object_name : queryset,
-                'object_list' : queryset
+                context_object_name: queryset,
+                'object_list': queryset
             }
         context.update(kwargs)
         context_object_name = self.get_context_object_name(queryset)
         if context_object_name is not None:
             context[context_object_name] = queryset
         return context
+
+
+class MixinBase(View):
+    breadcrumbs = []
+    template_name_base = 'base.html'
+
+    def get_breadcrumbs(self):
+        return self.breadcrumbs
+
+    def get_template_name_base(self):
+        template_name_base = self.template_name_base
+        if self.request.is_ajax():
+            template_name_base = '%s_ajax.%s' % tuple(template_name_base.split('.'))
+        return template_name_base
+
+    def render_to_response(self, context, **response_kwargs):
+        context.update({'breadcrumbs': self.get_breadcrumbs,
+                        'template_name_base': self.get_template_name_base()})
+
+        return self.response_class(
+            request=self.request,
+            template=self.get_template_names(),
+            context=context,
+            **response_kwargs
+        )
+
+    def get_template_names(self):
+        if self.template_name:
+            return [self.template_name]
+        else:
+            namespace = resolve(self.request.path).namespace
+            base = camel_to_underline(self.__class__.__name__)
+            return ['%s/%s.html' % (namespace, base)]
+
+    def dispatch(self, request, *args, **kwargs):
+        if 'pk' in request.REQUEST:
+            kwargs['pk'] = request.REQUEST
+        if 'slug' in request.REQUEST:
+            kwargs['slug'] = request.REQUEST['slug']
+
+        result = super(MixinBase, self).dispatch(request, *args, **kwargs)
+
+        if request.is_ajax():
+            if isinstance(result, TemplateResponse):
+                if not result.is_rendered:
+                    result.render()
+                result = result.rendered_content
+            if hasattr(self, 'ajax_errors') and len(self.ajax_errors):
+                return json_response({'success': False, 'errors': self.ajax_errors})
+            return json_response({'success': True, 'data': result})
+
+        return result
+
+class AjaxView(MixinBase):
+    def post_process(self, result, request):
+        if not isinstance(result, HttpResponse):
+            if isinstance(result, (list, tuple)):
+                success, data = result
+            else:
+                success = result
+                data = None
+            return json_response({'success' : success, 'data' : data})
+        return result
+    @json_handler_decorator_dispatch(post_process=post_process)
+    def dispatch(self, request, *args, **kwargs):
+        return super(AjaxView, self).dispatch(request, *args, **kwargs)
