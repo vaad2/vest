@@ -2,6 +2,8 @@ from thread_locals import get_thread_var, set_thread_var
 from django.utils.datastructures import SortedDict
 
 
+
+
 def mongo_get(collection = None):
     from django.conf import settings
     from pymongo import Connection
@@ -11,10 +13,11 @@ def mongo_get(collection = None):
         connection = Connection()[settings.MONGO['default']['NAME']]
         set_thread_var('mongo_connection', connection)
 
-    if connection:
+    if connection and collection:
         if hasattr(collection, '_meta'):
             return connection[collection._meta.db_table]
         return connection[collection]
+
 
     return connection
 
@@ -42,7 +45,8 @@ def es_utils_get(doctypes=None):
 
         # s = S().indexes('dbvestlitecms').doctypes('product')
 
-        connection = S().es(hosts=['%s:%s' % (settings.ES['default']['HOST'], settings.ES['default']['PORT'])]).indexes(settings.ES['default']['NAME'])
+        connection = S().es().indexes(settings.ES['default']['NAME'])
+
 
         # ElasticSearch('%s:%s/' % (settings.ES['default']['HOST'], settings.ES['default']['PORT']))
         set_thread_var('es_utils_connetion', connection)

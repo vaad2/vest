@@ -7,7 +7,7 @@ from django.template.response import TemplateResponse
 from django.views.generic.base import TemplateView, View
 from django.views.generic.list import MultipleObjectMixin
 from common.decorators import json_handler_decorator_dispatch
-from common.http import json_response
+from common.http import json_response, json_mongo_response
 from common.std import camel_to_underline
 from models import SiteSettings
 from django.db.models.query import QuerySet
@@ -310,8 +310,8 @@ class MixinBase(View):
                     result.render()
                 result = result.rendered_content
             if hasattr(self, 'ajax_errors') and len(self.ajax_errors):
-                return json_response({'success': False, 'errors': self.ajax_errors})
-            return json_response({'success': True, 'data': result})
+                return json_mongo_response({'success': False, 'errors': self.ajax_errors})
+            return json_mongo_response({'success': True, 'data': result})
 
         return result
 
@@ -323,7 +323,7 @@ class AjaxView(MixinBase):
             else:
                 success = result
                 data = None
-            return json_response({'success' : success, 'data' : data})
+            return json_mongo_response({'success' : success, 'data' : data})
         return result
     @json_handler_decorator_dispatch(post_process=post_process)
     def dispatch(self, request, *args, **kwargs):

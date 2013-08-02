@@ -1,5 +1,5 @@
 import os
-import settings, shutil, random, types, codecs
+import shutil, random, types, codecs
 from datetime import datetime
 from django.db import connection
 from django.contrib.auth.models import User
@@ -7,6 +7,7 @@ from django.core.files import File
 from django.template.loader import render_to_string
 import urllib2, os, hashlib
 
+from django.conf import settings
 
 def truncate(model):
     try:

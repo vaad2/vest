@@ -1,4 +1,5 @@
 import json
+from bson import json_util
 from bson.objectid import ObjectId
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
@@ -12,6 +13,7 @@ class MongoEncoder(JSONEncoder):
         else:
             return JSONEncoder.default(obj, **kwargs)
 
+# , default=json_util.default
 
 def json_response(x):
     return HttpResponse(json.dumps(x, sort_keys=True, indent=2, cls=DjangoJSONEncoder),
@@ -19,8 +21,8 @@ def json_response(x):
 
 
 def json_mongo(x):
-    return json.dumps(x, sort_keys=True, indent=2, cls=MongoEncoder)
-
+    # return json.dumps(x, sort_keys=True, indent=2, cls=MongoEncoder)
+    return json.dumps(x, sort_keys=True, indent=2, default=json_util.default)
 
 def json_mongo_response(x):
     return HttpResponse(json_mongo(x), content_type='application/json; charset=UTF-8')
