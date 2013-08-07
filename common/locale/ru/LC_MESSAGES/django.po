@@ -1,0 +1,224 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-08 03:42+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: .\models.py:48
+msgid "state"
+msgstr "статус"
+
+#: .\models.py:49 .\models.py:218
+msgid "pos"
+msgstr "позиция"
+
+#: .\models.py:50
+msgid "since"
+msgstr "дата"
+
+#: .\models.py:60 .\models.py:70
+msgid "user"
+msgstr "пользователь"
+
+#: .\models.py:81
+msgid "site"
+msgstr "сайт"
+
+#: .\models.py:96 .\models.py:151 .\models.py:182 .\models.py:198
+#: .\models.py:242
+msgid "name"
+msgstr "наименование"
+
+#: .\models.py:97 .\models.py:217 .\models.py:241 .\models.py:367
+msgid "title"
+msgstr "заголовок"
+
+#: .\models.py:101 .\models.py:110
+msgid "site theme"
+msgstr "тема сайта"
+
+#: .\models.py:102
+msgid "site themes"
+msgstr "темы сайта"
+
+#: .\models.py:109 .\models.py:115 .\models.py:123 .\models.py:368
+msgid "site template"
+msgstr "шаблон"
+
+#: .\models.py:111 .\models.py:370
+msgid "content"
+msgstr "содержание"
+
+#: .\models.py:116
+msgid "site templates"
+msgstr "шаблоны"
+
+#: .\models.py:135 .\models.py:139 .\models.py:143 .\models.py:147
+msgid "file"
+msgstr "файл"
+
+#: .\models.py:152
+msgid "value"
+msgstr "значение"
+
+#: .\models.py:153
+msgid "text value"
+msgstr "значение текстовое"
+
+#: .\models.py:154 .\models.py:189 .\models.py:208
+msgid "description"
+msgstr "описание"
+
+#: .\models.py:160
+msgid "site setting"
+msgstr "настройка сайта"
+
+#: .\models.py:161
+msgid "site settings"
+msgstr "настроки сайта"
+
+#: .\models.py:183 .\models.py:199
+msgid "from email"
+msgstr "от email"
+
+#: .\models.py:184 .\models.py:200
+msgid "Subject"
+msgstr "Тема"
+
+#: .\models.py:185 .\models.py:201
+msgid "recipients"
+msgstr "получатели"
+
+#: .\models.py:186
+msgid "html content"
+msgstr "html содержание"
+
+#: .\models.py:187
+msgid "text content"
+msgstr "текстовое содержание"
+
+#: .\models.py:192 .\models.py:211
+msgid "mail template"
+msgstr "шаблон письма"
+
+#: .\models.py:193 .\models.py:212
+msgid "mail templates"
+msgstr "шаблоны писем"
+
+#: .\models.py:203
+msgid "html template"
+msgstr "шаблон для html"
+
+#: .\models.py:205
+msgid "text template"
+msgstr "шаблон для текста"
+
+#: .\models.py:219
+msgid "primary"
+msgstr "основной"
+
+#: .\models.py:243
+msgid "url"
+msgstr ""
+
+#: .\models.py:244
+msgid "parent"
+msgstr "родитель"
+
+#: .\models.py:245
+msgid "level"
+msgstr "уровень"
+
+#: .\models.py:246
+msgid "path"
+msgstr "путь"
+
+#: .\models.py:248
+msgid "inner pos"
+msgstr "вн. позиция"
+
+#: .\models.py:254 .\models.py:255
+msgid "tree"
+msgstr "дерево"
+
+#: .\models.py:356
+msgid "top"
+msgstr "вверху"
+
+#: .\models.py:357
+msgid "bottom"
+msgstr "внизу"
+
+#: .\models.py:358
+msgid "left"
+msgstr "слева"
+
+#: .\models.py:359
+msgid "right"
+msgstr "справа"
+
+#: .\models.py:360
+msgid "free"
+msgstr "свободно"
+
+#: .\models.py:361
+msgid "all"
+msgstr "все"
+
+#: .\models.py:372
+msgid "is content template"
+msgstr "это шаблон"
+
+#: .\models.py:374
+msgid "navigation position"
+msgstr "позиция в навигации"
+
+#: .\models.py:375
+msgid "content position"
+msgstr "позиция в содержании"
+
+#: .\models.py:377
+msgid "nav title"
+msgstr "заголовок в навигации"
+
+#: .\models.py:378
+msgid "nav show"
+msgstr "показывать в навигации"
+
+#: .\models.py:380
+msgid "extra pos"
+msgstr "доп. позиция"
+
+#: .\models.py:382
+msgid "seo keywords"
+msgstr "сео кл.слова"
+
+#: .\models.py:383
+msgid "seo description"
+msgstr "сео описание"
+
+#: .\models.py:384
+msgid "seo title"
+msgstr "сео заголовок"
+
+#: .\models.py:391
+msgid "simple page"
+msgstr "простая страница"
+
+#: .\models.py:392
+msgid "simple pages"
+msgstr "простые страницы"
