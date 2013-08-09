@@ -78,7 +78,7 @@ class AbstractUserDefaultModel(AbstractDefaultModel):
 
 
 class AbstractUserSiteDefaultModel(AbstractUserDefaultModel):
-    site = models.ForeignKey(Site, verbose_name=_('site'), default=get_current_site)
+    site = models.ForeignKey(Site, verbose_name=_('site'), default=get_current_site, blank=True, null=True)
 
     objects = models.Manager()
     user_objects = UserManager()
