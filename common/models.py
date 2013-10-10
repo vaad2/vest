@@ -174,7 +174,7 @@ class SiteSettings(AbstractUserSiteDefaultModel):
     @classmethod
     def robots_get(cls):
         robots_str = cls.value_get('robots.txt')
-        return robots_str if len(robots_str) else '''User-agent: *
+        return robots_str if robots_str and len(robots_str) else '''User-agent: *
         Disallow:'''
 
 
@@ -220,7 +220,7 @@ class AbstractList(models.Model):
 
     def save(self, **kwargs):
         if self.primary:
-            AbstractList.objects.filter(primary=True).update(primary=False)
+            self.__class__.objects.filter(primary=True).update(primary=False)
 
         if not self.pk:
             max_pos = self.__class__.objects.aggregate(Max('pos'))['pos__max']
