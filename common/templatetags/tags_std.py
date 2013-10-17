@@ -19,8 +19,8 @@ def tag_simple_page(context, *args, **kwargs):
     position_nav_mask = kwargs.get('position_nav_mask', 15)
     position_content_mask = kwargs.get('position_content_mask', 15)
     extra_pos = kwargs.get('extra_pos', 0)
+    #old versionget('extra_pos', 0)
 
-    #old version
     la = len(args)
     if la > 0:
         position_content_mask = args[0]

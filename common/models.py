@@ -78,7 +78,7 @@ class AbstractUserDefaultModel(AbstractDefaultModel):
 
 
 class AbstractUserSiteDefaultModel(AbstractUserDefaultModel):
-    site = models.ForeignKey(Site, verbose_name=_('site'), default=get_current_site)
+    site = models.ForeignKey(Site, verbose_name=_('site'), default=get_current_site, blank=True, null=True)
 
     objects = models.Manager()
     user_objects = UserManager()
@@ -174,7 +174,7 @@ class SiteSettings(AbstractUserSiteDefaultModel):
     @classmethod
     def robots_get(cls):
         robots_str = cls.value_get('robots.txt')
-        return robots_str if len(robots_str) else '''User-agent: *
+        return robots_str if robots_str and len(robots_str) else '''User-agent: *
         Disallow:'''
 
 

@@ -5,7 +5,8 @@ from common.views import MixinBase
 
 from django.views.generic import View
 from django.http import HttpResponse
-
+import logging
+logger = logging.getLogger('vest.common.urls')
 
 def ajax_urlpatterns():
     from django.conf import settings
@@ -39,7 +40,7 @@ def ajax_urlpatterns():
                 urlpatterns += patterns(r'',
                                         url(r'ajax/', include(patterns('', *urls_list), namespace='ajax_%s' % app)))
         except BaseException, e:
-            pass
+            logger.debug('impert module failed %s' % e)
 
     class ViewDynamicUrls(View):
         def dispatch(self, request, *args, **kwargs):
