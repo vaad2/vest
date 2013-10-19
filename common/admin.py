@@ -13,7 +13,7 @@ class SuperAdminSite(AdminSite):
         return request.user.is_superuser and request.user.is_active and request.user.is_staff
 
 
-def autodiscover(admin_super):
+def autodiscover(admin_super, **kwargs):
     from django.conf import settings
     for app in settings.INSTALLED_APPS:
         try:
