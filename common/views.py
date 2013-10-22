@@ -316,7 +316,7 @@ class MixinBase(View):
         return result
 
 class AjaxView(MixinBase):
-    def post_process(self, result, request):
+    def post_process(self, result, request, *args, **kwargs):
         if not isinstance(result, HttpResponse):
             if isinstance(result, (list, tuple)):
                 success, data = result
