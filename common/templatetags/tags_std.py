@@ -8,6 +8,7 @@ from common.consts import VEST_CURRENT_TREE
 from common.std import model_class_get
 from common.thread_locals import get_thread_var
 import random
+from common.utags import utag_tree
 
 register = Library()
 
@@ -138,3 +139,13 @@ def tag_list_random(context, *args, **kwargs):
         qset.append(context['tag_list_random']['qset'][ofs:ofs + 1][0])
 
     return render_to_string(kwargs['template_name'], context)
+
+
+from django.db.models.loading import get_model
+
+@register.simple_tag(takes_context = True)
+def tag_tree(context, *args, **kwargs):
+    if not 'cls' in kwargs:
+        kwargs['cls'] = 'frontend.Category'
+
+    return utag_tree(context, *args, **kwargs)

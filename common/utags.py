@@ -6,13 +6,13 @@ from common.std import model_class_get
 from  consts import *
 from common.thread_locals import get_thread_var, set_thread_var
 
+
 def utag_form(context, form_class, *args, **kwargs):
     template_name = kwargs.get('template_name', 'tag_form.html')
     template_name_success = kwargs.get('template_name_success', 'tag_form_success.html')
 
     request = context['request']
     form_name = request.REQUEST.get('_form_name', None)
-
 
     if form_name == form_class.__name__.lower():
         form = form_class(request.POST or None)
@@ -23,11 +23,12 @@ def utag_form(context, form_class, *args, **kwargs):
             if 'handler_success' in kwargs:
                 kwargs['handler_success'](request, form)
 
-            return render_to_string(template_name_success, { 'form' : form })
+            return render_to_string(template_name_success, {'form': form})
 
-        return render_to_string(template_name, { 'form' : form })
+        return render_to_string(template_name, {'form': form})
 
-    return render_to_string(template_name, { 'form' : form_class() })
+    return render_to_string(template_name, {'form': form_class()})
+
 
 def utag_tree(context, *args, **kwargs):
     template_name = kwargs.get('template_name', 'tag_tree.html')
@@ -40,12 +41,16 @@ def utag_tree(context, *args, **kwargs):
     cats = get_thread_var(VEST_CURRENT_TREE, {})
     if isinstance(cls, basestring):
         cls = model_class_get(cls)
-    try:
-        item = cls.objects.get(pk = args[0])
-    except BaseException, e:
-        item = cls.objects.get(name = args[0])
 
-    items = list(item.descendants_get(qkwargs))
+    if len(args):
+        try:
+            item = cls.objects.get(pk=args[0])
+        except BaseException, e:
+            item = cls.objects.get(name=args[0])
+
+        items = list(item.descendants_get(qkwargs))
+    else:
+        items = list(cls.objects.all())
 
     if 'cmp' in kwargs:
         cmp = kwargs['cmp']
@@ -89,7 +94,7 @@ def utag_tree(context, *args, **kwargs):
         'items': items,
         'curr_url': url,
         'request': request,
-        'args' : args,
-        'kwargs' :kwargs
+        'args': args,
+        'kwargs': kwargs
     })
 

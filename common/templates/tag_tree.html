@@ -10,7 +10,7 @@
       <li {%if item.active %}class="current_page_item"{% endif %}>
       <a href="{{ item.url }}">{{ item.title }}</a></li>
       {% endif %}
-      {% for ind in item.close|fxrange %}</ul></li>{% endfor %}
+      {% for ind in item.close|xrange_get %}</ul></li>{% endfor %}
     {% endfor %}
   </ul><!-- End "menu" -->
 </div><!-- End "navigation" -->

@@ -13,13 +13,13 @@ class SuperAdminSite(AdminSite):
         return request.user.is_superuser and request.user.is_active and request.user.is_staff
 
 
-def autodiscover(admin_super, **kwargs):
+def autodiscover(admin, **kwargs):
     from django.conf import settings
     for app in settings.INSTALLED_APPS:
         try:
             module = import_module('.admin', app)
             try:
-                module.admin_register(admin_super)
+                module.admin_register(admin)
                 print 'fn ok'
             except AttributeError:
                 logger.debug('cant import fn')
