@@ -132,14 +132,14 @@ def image_from_url_get(url):
 
 def image_from_url_get_2(url, name_gen=True):
     file = image_from_url_get(url)
-    ext = os.path.splitext(url)[1]
+    ext = os.path.splitext(urlparse.urlparse(url).path)[1]
     if name_gen:
         md5 = hashlib.md5()
         md5.update('%s-%s' % (url, datetime.now()))
         if not ext:
             ext = '.jpg'
 
-        file.name = '%s%s' % (md5.hexdigest(), ext)
+        file.name = '%s%s' % (md5.hexdigest(), ext.lower())
     else:
         file.name = os.path.basename(url)
 
