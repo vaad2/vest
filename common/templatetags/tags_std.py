@@ -32,7 +32,6 @@ def tag_simple_page(context, *args, **kwargs):
     if la > 3:
         extra_pos = args[3]
 
-
     request = context['request']
     sps = []
 
@@ -63,9 +62,11 @@ def int_get(value):
     except BaseException, e:
         return 0
 
+
 @register.filter
 def val_get(dc, key):
     return dc.get(key, '')
+
 
 @register.filter
 def inc_get(value, add=1):
@@ -146,7 +147,8 @@ def tag_list_random(context, *args, **kwargs):
 
 from django.db.models.loading import get_model
 
-@register.simple_tag(takes_context = True)
+
+@register.simple_tag(takes_context=True)
 def tag_tree(context, *args, **kwargs):
     if not 'cls' in kwargs:
         kwargs['cls'] = 'frontend.Category'
