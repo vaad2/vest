@@ -63,6 +63,9 @@ def int_get(value):
     except BaseException, e:
         return 0
 
+@register.filter
+def val_get(dc, key):
+    return dc.get(key, '')
 
 @register.filter
 def inc_get(value, add=1):
