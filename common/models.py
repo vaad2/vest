@@ -7,7 +7,7 @@ from thread_locals import get_current_request, get_current_user, get_current_sit
 from django.db.models import Max
 from django.views.generic.list import ListView, MultipleObjectMixin
 from common.std import upload_def_get_2
-
+from django.db.models import F
 
 class SiteManager(models.Manager):
     def get_query_set(self):
@@ -261,11 +261,17 @@ class AbstractTree(AbstractUserSiteDefaultModel):
 
     def save(self, **kwargs):
         if self.parent:
+            if self.path:
+                self.descendants_get().update(level=F('level') - self.level + self.parent.level + 1)
+
             self.level = self.parent.level + 1
             if not self.pk:
                 max_pos = self.__class__.site_objects.filter(parent=self.parent).aggregate(Max('pos'))['pos__max']
                 if not max_pos is None:
                     self.pos = max_pos + 1
+        else:
+            self.level = 0
+
 
         super(AbstractTree, self).save(**kwargs)
         self.__class__.path_update()
@@ -328,7 +334,8 @@ class AbstractTree(AbstractUserSiteDefaultModel):
 
     def descendants_get(self, with_parent=False, **kwargs):
         kwargs['path__istartswith'] = self.path
-        kwargs['level__gte'] = self.level
+        if not 'level__gte' in kwargs:
+            kwargs['level__gte'] = self.level
         queryset = self.__class__.site_objects.filter(**kwargs)
         if not with_parent:
             queryset = queryset.exclude(pk=self.pk)
@@ -385,7 +392,7 @@ class AbstractSimplePage(AbstractUserSiteDefaultModel):
 
     def __unicode__(self):
         return 'url:%s title:%s nav:%s content:%s' % (
-        self.title, self.url, self.get_position_nav_display(), self.get_position_content_display())
+            self.title, self.url, self.get_position_nav_display(), self.get_position_content_display())
 
     class Meta:
         verbose_name = _('simple page')

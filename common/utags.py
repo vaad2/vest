@@ -35,8 +35,10 @@ def utag_tree(context, *args, **kwargs):
     request = context['request']
     url = re.sub(r'/+', '/', '/%s/' % request.path_info.strip('/'), re.IGNORECASE)
     max_level = kwargs.get('max_level', 100)
+    min_level = kwargs.get('min_level', 0)
 
-    qkwargs = kwargs.get('qkwargs', {})
+    qkwargs = kwargs.get('qkwargs', {'level__lte': max_level, 'level__gte': min_level})
+
     cls = kwargs['cls']
     cats = get_thread_var(VEST_CURRENT_TREE, {})
     if isinstance(cls, basestring):
@@ -48,7 +50,7 @@ def utag_tree(context, *args, **kwargs):
         except BaseException, e:
             item = cls.objects.get(name=args[0])
 
-        items = list(item.descendants_get(qkwargs))
+        items = list(item.descendants_get(**qkwargs))
     else:
         items = list(cls.objects.all())
 
