@@ -289,12 +289,21 @@ class MixinBase(View):
         )
 
     def get_template_names(self):
+
         if self.template_name:
-            return [self.template_name]
+            tn = self.template_name
         else:
             namespace = resolve(self.request.path).namespace
             base = camel_to_underline(self.__class__.__name__)
-            return ['%s/%s.html' % (namespace, base)]
+            tn = '%s/%s.html' % (namespace, base)
+
+        if self.request.is_ajax():
+            tna = tn.split('.')
+            tna[-2] = '%s_ajax' % tna[-2]
+            return ['.'.join(tna)]
+
+        return [tn]
+
 
     def dispatch(self, request, *args, **kwargs):
         if 'pk' in request.REQUEST:

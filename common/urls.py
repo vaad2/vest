@@ -1,5 +1,10 @@
 import inspect, json
-from django.conf.urls.defaults import include, url, patterns
+
+try:
+    from django.conf.urls.defaults import include, url, patterns
+except BaseException, e:
+    from django.conf.urls import include, url, patterns
+
 from django.utils.importlib import import_module
 from common.views import MixinBase
 
