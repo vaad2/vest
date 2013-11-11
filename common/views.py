@@ -113,6 +113,7 @@ class ExPaginator(object):
 
         self.offset_next_page = limit * self.next_page
         self.offset_prev_page = limit * self.prev_page
+        self.offset_last_page = limit * (self.num_pages - 1)
 
         self.curr_page += 1
         self.next_page += 1
@@ -121,6 +122,7 @@ class ExPaginator(object):
         self.name_offset = name_offset
         self.name_limit = name_limit
         self.map_page = map_page
+
 
         if params and self.name_offset in params:
             params = dict(params)

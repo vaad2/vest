@@ -9,6 +9,7 @@ from django.views.generic.list import ListView, MultipleObjectMixin
 from common.std import upload_def_get_2
 from django.db.models import F
 
+
 class SiteManager(models.Manager):
     def get_query_set(self):
         from django.conf import settings
@@ -272,7 +273,6 @@ class AbstractTree(AbstractUserSiteDefaultModel):
         else:
             self.level = 0
 
-
         super(AbstractTree, self).save(**kwargs)
         self.__class__.path_update()
 
@@ -347,9 +347,10 @@ class AbstractTree(AbstractUserSiteDefaultModel):
     def path_get(self):
         return self.path.split(',')[:-1]
 
-    def parents_get(self, include_self=False):
+    def parents_get(self, include_self=False, min_level=0, max_level=100):
         if len(self.path) > 1:
-            qset = self.__class__.site_objects.filter(pk__in=self.path_get())
+            qset = self.__class__.site_objects.filter(pk__in=self.path_get(), level__gte=min_level,
+                                                      level__lte=max_level)
             if not include_self:
                 qset = qset.exclude(pk=self.pk)
             return qset
