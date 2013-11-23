@@ -5,6 +5,7 @@ from common.thread_locals import get_thread_var, set_thread_var
 
 logger = logging.getLogger('redis')
 
+
 def redis_write(key, val):
     redis_get().set(key, ujson.dumps(val))
 
@@ -20,15 +21,11 @@ def redis_publish(channel, val):
     redis_get().publish(channel, ujson.dumps(val))
 
 
-def redis_get():
-    redis = get_thread_var('redis')
+def redis_get(connection='redis'):
+    redis = get_thread_var(connection)
     if not redis:
         redis = Redis()
-        set_thread_var('redis', redis)
+        set_thread_var(connection, redis)
 
     return redis
 
-
-def trace_to_redis(msg):
-    logger.debug(msg)
-    redis_publish(msg)
