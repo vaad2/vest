@@ -1,6 +1,6 @@
 import logging
 import ujson
-from redis_std import Redis
+from redis import Redis
 from common.thread_locals import get_thread_var, set_thread_var
 
 logger = logging.getLogger('redis')

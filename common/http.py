@@ -5,6 +5,10 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
 from json import JSONEncoder
 # from django.utils.simplejson.encoder import JSONEncoder
+try:
+    import ujson
+except BaseException, e:
+    pass
 
 class MongoEncoder(JSONEncoder):
     def default(self, obj, **kwargs):
@@ -18,6 +22,10 @@ class MongoEncoder(JSONEncoder):
 def json_response(x):
     return HttpResponse(json.dumps(x, sort_keys=True, indent=2, cls=DjangoJSONEncoder),
                         content_type='application/json; charset=UTF-8')
+
+
+def ujson_response(x):
+    return HttpResponse(ujson.dumps(x), content_type='application/json; charset=UTF-8')
 
 
 def json_mongo(x):

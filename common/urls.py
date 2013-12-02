@@ -22,7 +22,7 @@ def ajax_urlpatterns():
         'view_link': {}
     }
 
-    verbs = {'View': 'view', 'Crea': 'create', 'Upda': 'update', 'Dele': 'delete'}
+    verbs = {'View': 'view', 'Crea': 'create', 'Upda': 'update', 'Dele': 'delete', 'Ajax' : 'ajax'}
     for app in settings.INSTALLED_APPS:
         import_module(app)
         try:

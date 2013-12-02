@@ -110,6 +110,7 @@ def default_context_init(context, *args, **kwargs):
             clsa = kwargs['qset'].split('.')
             cls = model_class_get(kwargs['qset'])
             sub_context['qset'] = getattr(cls, clsa[2]) if len(clsa) > 2 else cls.objects.all()
+
             if hasattr(sub_context['qset'], '__call__'):
                 sub_context['qset'] = sub_context['qset']()
         else:

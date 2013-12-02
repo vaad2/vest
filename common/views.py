@@ -306,6 +306,8 @@ class MixinBase(View):
 
         return [tn]
 
+    def json_handler_get(self):
+        return json_mongo_response
 
     def dispatch(self, request, *args, **kwargs):
         if 'pk' in request.REQUEST:
@@ -321,8 +323,8 @@ class MixinBase(View):
                     result.render()
                 result = result.rendered_content
             if hasattr(self, 'ajax_errors') and len(self.ajax_errors):
-                return json_mongo_response({'success': False, 'errors': self.ajax_errors})
-            return json_mongo_response({'success': True, 'data': result})
+                return self.json_handler_get()({'success': False, 'errors': self.ajax_errors})
+            return self.json_handler_get()({'success': True, 'data': result})
 
         return result
 
@@ -334,7 +336,7 @@ class AjaxView(MixinBase):
             else:
                 success = result
                 data = None
-            return json_mongo_response({'success' : success, 'data' : data})
+            return self.json_handler_get()({'success' : success, 'data' : data})
         return result
     @json_handler_decorator_dispatch(post_process=post_process)
     def dispatch(self, request, *args, **kwargs):
