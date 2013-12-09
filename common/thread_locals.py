@@ -31,8 +31,9 @@ def get_current_site():
 def get_current_user():
     """ returns the current user, if exist, otherwise returns None """
     request = get_current_request()
-    if request:
-        return getattr(request, "user", None)
+    if request and hasattr(request, 'user') and request.user.is_authenticated():
+        return user
+    return None
 
 def set_thread_var(name, value):
     setattr(_thread_locals, name, value)
