@@ -22,14 +22,19 @@ def ajax_urlpatterns():
         'view_link': {}
     }
 
+
     verbs = {'View': 'view', 'Crea': 'create', 'Upda': 'update', 'Dele': 'delete', 'Ajax' : 'ajax'}
     for app in settings.INSTALLED_APPS:
+        logger.debug('app %s' % app)
         import_module(app)
         try:
             urls_list = []
+            logger.debug('module %s' % ('%s.ajax_views' % app))
             module = import_module('%s.ajax_views' % app)
+
             for name, obj in inspect.getmembers(module, inspect.isclass):
                 if issubclass(obj, MixinBase):
+                    logger.debug('name %s' % name)
                     if name[:4] in verbs:
                         view_name = name
                         full_view_name = '%s:%s' % (app, view_name)
@@ -45,7 +50,7 @@ def ajax_urlpatterns():
                 urlpatterns += patterns(r'',
                                         url(r'ajax/', include(patterns('', *urls_list), namespace='ajax_%s' % app)))
         except BaseException, e:
-            logger.debug('impert module failed %s' % e)
+            logger.debug('import module failed %s' % e)
 
     class ViewDynamicUrls(View):
         def dispatch(self, request, *args, **kwargs):
