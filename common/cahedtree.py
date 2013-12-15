@@ -25,7 +25,7 @@ class CacheTreeItem(object):
             children.append(self)
 
         tl = self.ctree.tree_list
-
+        cti_prev = None
         while pos < len(tl):
             cti = tl[pos]
             pos += 1
@@ -35,8 +35,12 @@ class CacheTreeItem(object):
 
             if cti.item.level <= lev:
                 break
+            cti_prev = cti
 
             children.append(cti)
+
+        if cti_prev:
+            cti_prev.close = cti_prev.item.level - self.item.level - 1
 
         return children
 
@@ -70,6 +74,7 @@ class CacheTree(object):
                 active_item = item
                 cti.active = True
                 cti.current = True
+
 
         if active_item:
             for item_pk in active_item.path.split(','):
