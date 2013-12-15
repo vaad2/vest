@@ -58,7 +58,7 @@ class VTRobokassa(VTPayment):
     def pay_confirm(self, **kwargs):
         crc = kwargs['crc'].upper()
 
-        str_data = '%.2f:%s:%s' % (kwargs['out_sum'], kwargs['inv_id'], self.mrh_pass2)
+        str_data = '%.2f:%s:%s' % (float(kwargs['out_sum']), kwargs['inv_id'], self.mrh_pass2)
         ex_params = self.params_pack(**kwargs)
 
         if len(ex_params):
