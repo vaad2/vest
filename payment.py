@@ -53,8 +53,8 @@ class VTRobokassa(VTPayment):
         }
 
     # MrchLogin=$mrh_login&".
-    "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc"
-
+    # "OutSum=$out_summ&InvId=$inv_id&Desc=$inv_desc&SignatureValue=$crc"
+    #out_sum, inv_id
     def pay_confirm(self, **kwargs):
         crc = kwargs['crc'].upper()
 
@@ -70,7 +70,7 @@ class VTRobokassa(VTPayment):
     def pay_result(self, **kwargs):
         crc = kwargs['crc'].upper()
 
-        str_data = '%.2f:%s:%s' % (kwargs['out_sum'], kwargs['inv_id'], self.mrh_pass1)
+        str_data = '%.2f:%s:%s' % (float(kwargs['out_sum']), kwargs['inv_id'], self.mrh_pass1)
         ex_params = self.params_pack(**kwargs)
 
         if len(ex_params):
