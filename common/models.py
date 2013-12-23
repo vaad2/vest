@@ -132,6 +132,8 @@ class AbstractFile(AbstractDefaultModel, AbstractUserModel):
         return '%s%s' % (settings.MEDIA_URL, unicode(self.file))
 
 
+
+
 class FileJs(AbstractFile):
     file = models.FileField(_('file'), upload_to=upload_def_get_2('uploads/%s/js/%s', field='user'))
 
@@ -234,7 +236,7 @@ class AbstractList(models.Model):
         return self.title
 
     class Meta:
-        ordering = ['pos', 'title']
+        ordering = ['-primary', 'pos', 'title']
         abstract = True
 
 

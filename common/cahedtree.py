@@ -57,6 +57,9 @@ class CacheTree(object):
         active_item = None
 
         for i, item in enumerate(tree):
+            if not item.state:
+                continue
+
             cti = CacheTreeItem(i, item, self)
 
             self.tree_map[item.pk] = cti

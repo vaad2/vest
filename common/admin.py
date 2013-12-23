@@ -26,7 +26,6 @@ def autodiscover(admin, **kwargs):
             module = import_module('.admin', app)
             try:
                 module.admin_register(admin)
-                print 'fn ok'
             except AttributeError:
                 logger.debug('cant import fn')
 
