@@ -34,6 +34,16 @@ class ViewDefault(TemplateView):
         else:
             return [self.template_name]
 
+    def get_context_data(self, **kwargs):
+        context = super(ViewDefault, self).get_context_data(**kwargs)
+        sp = self.request.simple_page
+        if sp:
+            context['vt_breadcrumbs'] = {
+                'title': sp[0].title
+            }
+
+        return context
+
     def post(self, request, *args, **kwargs):
         return self.get(request, *args, **kwargs)
 
@@ -122,7 +132,6 @@ class ExPaginator(object):
         self.name_offset = name_offset
         self.name_limit = name_limit
         self.map_page = map_page
-
 
         if params and self.name_offset in params:
             params = dict(params)
@@ -328,6 +337,7 @@ class MixinBase(View):
 
         return result
 
+
 class AjaxView(MixinBase):
     def post_process(self, result, request, *args, **kwargs):
         if not isinstance(result, HttpResponse):
@@ -336,8 +346,9 @@ class AjaxView(MixinBase):
             else:
                 success = result
                 data = None
-            return self.json_handler_get()({'success' : success, 'data' : data})
+            return self.json_handler_get()({'success': success, 'data': data})
         return result
+
     @json_handler_decorator_dispatch(post_process=post_process)
     def dispatch(self, request, *args, **kwargs):
         return super(AjaxView, self).dispatch(request, *args, **kwargs)
