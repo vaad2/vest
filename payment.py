@@ -32,7 +32,7 @@ class VTRobokassa(VTPayment):
         dc_params.update(kwargs.get('ex_params', {}))
 
         for key, val in dc_params.iteritems():
-            ex_params.append('shp%s=%s' % (key, val))
+            ex_params.append('shp_%s=%s' % (key, val))
 
         if len(ex_params):
             ex_params.sort()
