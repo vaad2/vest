@@ -36,6 +36,7 @@ class VTRobokassa(VTPayment):
         self.url = 'http://test.robokassa.ru/Index.aspx' if kwargs.get(
             'TestMode') else 'https://auth.robokassa.ru/Merchant/Index.aspx'
 
+
     def crc(self, str_data):
         import hashlib
 

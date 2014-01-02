@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+
 from django.contrib.sites.models import Site
 from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext_lazy as _
@@ -8,7 +8,12 @@ from django.db.models import Max
 from django.views.generic.list import ListView, MultipleObjectMixin
 from common.std import upload_def_get_2
 from django.db.models import F
+from django.conf import settings
 
+if hasattr(settings, 'AUTH_USER_MODEL'):
+    User = settings.AUTH_USER_MODEL
+else:
+    from django.contrib.auth.models import User
 
 class SiteManager(models.Manager):
     def get_query_set(self):
