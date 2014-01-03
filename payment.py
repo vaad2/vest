@@ -61,9 +61,9 @@ class VTRobokassa(VTPayment):
 
     def _signature_get(self, password, **kwargs):
         if 'MerchantLogin' in kwargs:
-            str_sig = '%s:%.2f:%s:%s' % (kwargs['MerchantLogin'], float(kwargs['OutSum']), kwargs['InvId'], password)
+            str_sig = '%s:%s:%s:%s' % (kwargs['MerchantLogin'], kwargs['OutSum'], kwargs['InvId'], password)
         else:
-            str_sig = '%.2f:%s:%s' % (float(kwargs['OutSum']), kwargs['InvId'], password)
+            str_sig = '%s:%s:%s' % (kwargs['OutSum'], kwargs['InvId'], password)
 
         ex_params, dc_params = self.params_pack(**kwargs)
         if len(ex_params):
@@ -73,8 +73,9 @@ class VTRobokassa(VTPayment):
 
 
     def pay_data(self, **kwargs):
+        kwargs['OutSum'] = '%.2f' % float(kwargs['OutSum'])
         str_sig, params = self._signature_get(self.MerchantPass1, MerchantLogin=self.MerchantLogin, **kwargs)
-        params.update({'MrchLogin': self.MerchantLogin, 'OutSum': '%.2f' % kwargs['OutSum'],
+        params.update({'MrchLogin': self.MerchantLogin, 'OutSum': kwargs['OutSum'],
                        'InvId': kwargs['InvId'],
                        'Desc': kwargs.get('Desc', ''), 'Culture': kwargs.get('Culture', ''),
                        'SignatureValue': self.crc(str_sig)
