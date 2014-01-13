@@ -245,27 +245,12 @@ class AbstractList(models.Model):
         abstract = True
 
 
-class AbstractTree(AbstractUserSiteDefaultModel):
-    title = models.CharField(verbose_name=_('title'), max_length=255)
-    name = models.CharField(verbose_name=_('name'), max_length=255, blank=True)
-    url = models.CharField(verbose_name=_('url'), max_length=255, null=True, blank=True)
+class BaseAbstractTree(AbstractUserSiteDefaultModel):
     parent = models.ForeignKey('self', related_name='parent_node', null=True, blank=True, verbose_name=_('parent'))
     level = models.PositiveIntegerField(verbose_name=_('level'), default=0)
     path = models.TextField(verbose_name=_('path'), blank=True)
 
     inner_pos = models.CharField(verbose_name=_('inner pos'), max_length=255, default='', blank=True)
-
-    perms = 0 #1 - user, 2 - site, 3 - user and site. 0 - no check
-
-
-    class Meta:
-        verbose_name = _('tree')
-        verbose_name_plural = _('tree')
-        ordering = ['site', 'inner_pos', 'pos', 'title']
-        abstract = True
-
-    def __unicode__(self):
-        return '%s%s' % ('..' * self.level, self.title)
 
     def save(self, **kwargs):
         if self.parent:
@@ -280,7 +265,7 @@ class AbstractTree(AbstractUserSiteDefaultModel):
         else:
             self.level = 0
 
-        super(AbstractTree, self).save(**kwargs)
+        super(BaseAbstractTree, self).save(**kwargs)
         self.__class__.path_update()
 
 
@@ -337,7 +322,7 @@ class AbstractTree(AbstractUserSiteDefaultModel):
 
             curr_level = item.level
 
-            super(AbstractTree, item).save()
+            super(BaseAbstractTree, item).save()
 
     def descendants_get(self, with_parent=False, **kwargs):
         kwargs['path__istartswith'] = self.path
@@ -362,6 +347,35 @@ class AbstractTree(AbstractUserSiteDefaultModel):
                 qset = qset.exclude(pk=self.pk)
             return qset
         return []
+
+    def delete(self, using=None):
+        cls = self.__class__
+        for obj in self.descendants_get():
+            super(BaseAbstractTree, obj).delete(using=using)
+
+        super(BaseAbstractTree, self).delete(using=using)
+        cls.path_update()
+
+    class Meta:
+        verbose_name = _('tree')
+        verbose_name_plural = _('tree')
+        ordering = ['site', 'inner_pos', 'pos']
+        abstract = True
+
+class AbstractTree(BaseAbstractTree):
+    title = models.CharField(verbose_name=_('title'), max_length=255)
+    name = models.CharField(verbose_name=_('name'), max_length=255, blank=True)
+    url = models.CharField(verbose_name=_('url'), max_length=255, null=True, blank=True)
+
+    perms = 0 #1 - user, 2 - site, 3 - user and site. 0 - no check
+
+    class Meta:
+        verbose_name = _('tree')
+        verbose_name_plural = _('tree')
+        ordering = ['site', 'inner_pos', 'pos', 'title']
+        abstract = True
+
+
 
     def __unicode__(self):
         return '%s%s' % ('..' * self.level, self.title)

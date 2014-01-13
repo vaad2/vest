@@ -72,6 +72,9 @@ def val_get(dc, key):
 def inc_get(value, add=1):
     return value + add
 
+@register.filter
+def mul_get(value, mul=2.0):
+    return value*mul
 
 @register.simple_tag(takes_context=True)
 def tag_curr_cat(context, name, attr, *args, **kwargs):
