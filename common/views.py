@@ -38,9 +38,9 @@ class ViewDefault(TemplateView):
         context = super(ViewDefault, self).get_context_data(**kwargs)
         sp = self.request.simple_page
         if sp:
-            context['vt_breadcrumbs'] = {
+            context['vt_breadcrumbs'] = [{
                 'title': sp[0].title
-            }
+            }]
 
         return context
 

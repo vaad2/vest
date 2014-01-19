@@ -2,15 +2,15 @@
 <div id="navigation">
   <ul id="menu">
     {% for item in items %}
-    {% if item.open %}
-    <li {% if item.active %}class="current_page_item"{% endif %}>
-    <a href="{{ item.url }}">{{ item.title }}</a>
-    <ul>
-      {% else %}
-      <li {%if item.active %}class="current_page_item"{% endif %}>
-      <a href="{{ item.url }}">{{ item.title }}</a></li>
-      {% endif %}
-      {% for ind in item.close|xrange_get %}</ul></li>{% endfor %}
+        {% if item.open %}
+            <li {% if item.active %}class="current_page_item"{% endif %}>
+            <a href="{{ item.url }}">{{ item.title }}</a>
+            <ul>
+        {% else %}
+            <li {%if item.active %}class="current_page_item"{% endif %}>
+            <a href="{{ item.url }}">{{ item.title }}</a></li>
+        {% endif %}
+        {% for ind in item.close|xrange_get %}</ul></li>{% endfor %}
     {% endfor %}
   </ul><!-- End "menu" -->
 </div><!-- End "navigation" -->
