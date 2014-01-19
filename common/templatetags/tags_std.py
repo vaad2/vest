@@ -40,7 +40,7 @@ def tag_simple_page(context, *args, **kwargs):
             if sp.position_nav & position_nav_mask > 0 and sp.position_content & position_content_mask > 0 and sp.extra_pos == extra_pos:
                 if sp.is_content_template:
                     t = Template(sp.content)
-                    c = Context({'request': request})
+                    c = Context(context)
                     sp.content = t.render(c)
 
                 sps.append(sp)
