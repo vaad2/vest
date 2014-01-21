@@ -15,6 +15,7 @@ if hasattr(settings, 'AUTH_USER_MODEL'):
 else:
     from django.contrib.auth.models import User
 
+
 class SiteManager(models.Manager):
     def get_query_set(self):
         from django.conf import settings
@@ -30,9 +31,19 @@ class UserManager(models.Manager):
         return super(UserManager, self).get_query_set().filter(user=get_current_user)
 
 
-class DefaultManger(models.Manager):
+class DefaultManager(models.Manager):
     def get_query_set(self):
-        return super(DefaultManger, self).get_query_set().filter(state=True)
+        return super(DefaultManager, self).get_query_set().filter(state=True)
+
+
+class SiteDefaultManager(DefaultManager):
+    def get_query_set(self):
+        from django.conf import settings
+
+        try:
+            return super(SiteDefaultManager, self).get_query_set().filter(site=get_current_site)
+        except BaseException, e:
+            return super(SiteDefaultManager, self).get_query_set().filter(site__id=settings.SITE_ID)
 
 
 class UserSiteManager(SiteManager):
@@ -55,7 +66,7 @@ class AbstractDefaultModel(models.Model):
     pos = models.PositiveIntegerField(verbose_name=_('pos'), default=0)
     since = models.DateTimeField(auto_now_add=True, verbose_name=_('since'))
     objects = models.Manager()
-    active_objects = DefaultManger()
+    active_objects = DefaultManager()
 
     class Meta:
         abstract = True
@@ -66,7 +77,7 @@ class AbstractUserModel(models.Model):
     user = models.ForeignKey(User, verbose_name=_('user'), default=get_current_user)
     objects = models.Manager()
     user_objects = UserManager()
-    active_objects = DefaultManger()
+    active_objects = DefaultManager()
 
     class Meta:
         abstract = True
@@ -89,7 +100,8 @@ class AbstractUserSiteDefaultModel(AbstractUserDefaultModel):
     objects = models.Manager()
     user_objects = UserManager()
     site_objects = SiteManager()
-    active_objects = DefaultManger()
+    active_objects = DefaultManager()
+    active_site_objects = SiteDefaultManager()
     user_site_objects = UserSiteManager()
     user_site_active_objects = UserSiteDefaultManager()
 
@@ -135,8 +147,6 @@ class AbstractFile(AbstractDefaultModel, AbstractUserModel):
         from django.conf import settings
 
         return '%s%s' % (settings.MEDIA_URL, unicode(self.file))
-
-
 
 
 class FileJs(AbstractFile):
@@ -362,6 +372,7 @@ class BaseAbstractTree(AbstractUserSiteDefaultModel):
         ordering = ['site', 'inner_pos', 'pos']
         abstract = True
 
+
 class AbstractTree(BaseAbstractTree):
     title = models.CharField(verbose_name=_('title'), max_length=255)
     name = models.CharField(verbose_name=_('name'), max_length=255, blank=True)
@@ -374,7 +385,6 @@ class AbstractTree(BaseAbstractTree):
         verbose_name_plural = _('tree')
         ordering = ['site', 'inner_pos', 'pos', 'title']
         abstract = True
-
 
 
     def __unicode__(self):
