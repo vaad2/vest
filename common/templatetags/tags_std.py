@@ -67,6 +67,10 @@ def int_get(value):
 def val_get(dc, key):
     return dc.get(key, '')
 
+@register.filter
+def attr_get(object, name):
+    return getattr(object, name, None)
+
 
 @register.filter
 def inc_get(value, add=1):

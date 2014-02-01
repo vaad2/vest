@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from time import strftime, localtime
 import logging
-
+logger = logging.getLogger('vest.common')
 '''
 
 def yml_categories():
@@ -54,7 +54,6 @@ class YMLGenerator(object):
     def _open_catalog(self):
         self._write(strftime('<yml_catalog date="%Y-%m-%d %H:%M">', localtime()))
     def _close_catalog(self):
-        print 'close'
         self._write('</yml_catalog>')
         #1
     def _open_shop(self, info):
@@ -83,7 +82,7 @@ class YMLGenerator(object):
     def _write_categories(self, categories):
         self._write('<categories>')
         for category in categories:
-            if not category['parentId']:
+            if not 'parentId' in category:
                 self._write('<category id="%(id)s">%(title)s</category>' % category)
             else:
                 self._write('<category id="%(id)s" parentId="%(parentId)s">%(title)s</category>' % category)
@@ -97,7 +96,7 @@ class YMLGenerator(object):
             try:
                 self._write('<%s>%s</%s>' % (key, item[key], key))
             except BaseException, e:
-                print item[key]
+                logger.debug('exception write if %s' % e)
 
     def _write_offers(self, offers):
         self._write('<offers>')
@@ -131,8 +130,7 @@ class YMLGenerator(object):
                     else:
                         self._write_if('picture', offer)
             except BaseException, e:
-                log = logging.getLogger('file_logger')
-                log.debug(e)
+                logger.debug(e)
 
             self._write_if('delivery', offer)
             self._write('<name>%s</name>' % offer['name'])
