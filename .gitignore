@@ -1,3 +1,4 @@
 idea
 .idea/*
 remote_ctl.py
+*.pyc
