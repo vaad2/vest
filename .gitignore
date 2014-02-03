@@ -1,4 +1,5 @@
 idea
 .idea/*
 remote_ctl.py
+*.pyc
 .DS_Store
