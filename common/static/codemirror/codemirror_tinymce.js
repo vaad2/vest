@@ -184,7 +184,7 @@ function CustomFileBrowser(field_name, url, type, win) {
         });
 
         var id = 'id_content'; // ID of your textarea (no # symbol)
-        var editor = null;
+        editor = null;
 
         function _init() {
 //      var width = $('#id_content').parent().width();

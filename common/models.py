@@ -188,8 +188,8 @@ class SiteSettings(AbstractUserSiteDefaultModel):
         except cls.DoesNotExist:
             return default
 
-    def value_get(self):
-        return self.value if len(self.value) else self.value_txt
+    # def value_get(self):
+    #     return self.value if len(self.value) else self.value_txt
 
 
 
