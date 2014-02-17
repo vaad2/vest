@@ -188,14 +188,14 @@ class SiteSettings(AbstractUserSiteDefaultModel):
         except cls.DoesNotExist:
             return default
 
-    # def value_get(self):
-    #     return self.value if len(self.value) else self.value_txt
+    def value_get(self):
+        return self.value if len(self.value) else self.value_txt
 
 
 
     @classmethod
     def robots_get(cls):
-        robots_str = cls.value_get('robots.txt')
+        robots_str = cls.objects.get(name='robots.txt')
         return robots_str if robots_str and len(robots_str) else '''User-agent: *
         Disallow:'''
 
