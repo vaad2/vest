@@ -195,7 +195,7 @@ class SiteSettings(AbstractUserSiteDefaultModel):
 
     @classmethod
     def robots_get(cls):
-        robots_str = cls.objects.get(name='robots.txt')
+        robots_str = cls.objects.get(name='robots.txt').value
         return robots_str if robots_str and len(robots_str) else '''User-agent: *
         Disallow:'''
 
