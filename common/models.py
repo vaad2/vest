@@ -181,7 +181,7 @@ class SiteSettings(AbstractUserSiteDefaultModel):
 
 
     @classmethod
-    def value_get(cls, name, default=None):
+    def cls_value_get(cls, name, default=None):
         try:
             obj = cls.site_objects.get(name=name, state=True)
             return obj.value_get()
