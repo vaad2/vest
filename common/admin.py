@@ -29,6 +29,6 @@ def autodiscover(admin, **kwargs):
             except AttributeError:
                 logger.debug('cant import fn')
 
-        except BaseException, e:
+        except ImportError, e:
             logger.debug('cant find admin module %s' % app)
 
