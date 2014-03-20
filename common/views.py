@@ -39,8 +39,8 @@ class ViewDefault(TemplateView):
         sp = self.request.simple_page
         if sp:
             context['vt_breadcrumbs'] = [{
-                'title': sp[0].title
-            }]
+                                             'title': sp[0].title
+                                         }]
 
         return context
 
@@ -63,6 +63,7 @@ class ViewDefault(TemplateView):
 class ViewRobots(View):
     def dispatch(self, request, *args, **kwargs):
         return HttpResponse(SiteSettings.robots_get(), mimetype='text/plain')
+
 
 #need to check
 class ExPaginator(object):
@@ -233,7 +234,7 @@ class ExMultipleObjectMixin(MultipleObjectMixin):
                            params=params)
 
     def paginate_queryset(self, queryset, page_size, params=None):
-    #        paginator = self.get_paginator(queryset, page_size, allow_empty_first_page=self.get_allow_empty())
+        #        paginator = self.get_paginator(queryset, page_size, allow_empty_first_page=self.get_allow_empty())
         paginator = self.get_paginator(queryset, page_size, allow_empty_first_page=self.get_allow_empty(),
                                        params=params)
         return paginator, None, queryset[paginator.offset: paginator.offset + paginator.limit], paginator.num_rows > 1
@@ -242,7 +243,10 @@ class ExMultipleObjectMixin(MultipleObjectMixin):
         """
         Get the context for this view.
         """
-        queryset = kwargs.pop('object_list')
+        queryset = kwargs.get('object_list', None)
+        if not queryset:
+            queryset = self.object_list
+
         page_size = self.get_paginate_by(queryset)
         context_object_name = self.get_context_object_name(queryset)
 
@@ -301,7 +305,7 @@ class MixinBase(View):
 
     def get_template_names(self):
 
-        if self.template_name:
+        if hasattr(self, 'template_name') and self.template_name:
             tn = self.template_name
         else:
             namespace = resolve(self.request.path).namespace
