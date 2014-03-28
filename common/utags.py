@@ -40,7 +40,8 @@ def utag_tree(context, *args, **kwargs):
     qkwargs = kwargs.get('qkwargs', {'level__lte': max_level, 'level__gte': min_level})
 
     cls = kwargs['cls']
-    cats = get_thread_var(VEST_CURRENT_TREE, {})
+    # cats = get_thread_var(VEST_CURRENT_TREE, {})
+    cats = {}
     if isinstance(cls, basestring):
         cls = model_class_get(cls)
 
@@ -58,6 +59,8 @@ def utag_tree(context, *args, **kwargs):
         cmp = kwargs['cmp']
     else:
         def cmp(op1, item):
+            if hasattr(item, 'url_get'):
+                return op1 == item.url_get()
             return op1 == item.url
 
     if len(items):
@@ -90,7 +93,7 @@ def utag_tree(context, *args, **kwargs):
                 if item_pk in item_map:
                     item_map[item_pk].active = True
 
-    set_thread_var(VEST_CURRENT_TREE, cats)
+    # set_thread_var(VEST_CURRENT_TREE, cats)
 
     return render_to_string(template_name, {
         'items': items,
