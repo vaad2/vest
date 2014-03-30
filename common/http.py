@@ -1,6 +1,10 @@
 import json
-from bson import json_util
-from bson.objectid import ObjectId
+try:
+    from bson import json_util
+    from bson.objectid import ObjectId
+except BaseException,e:
+    pass
+
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
 from json import JSONEncoder
