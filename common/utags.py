@@ -45,15 +45,18 @@ def utag_tree(context, *args, **kwargs):
     if isinstance(cls, basestring):
         cls = model_class_get(cls)
 
-    if len(args):
-        try:
-            item = cls.objects.get(pk=args[0])
-        except BaseException, e:
-            item = cls.objects.get(name=args[0])
+    try:
+        if len(args):
+            try:
+                item = cls.objects.get(pk=args[0])
+            except BaseException, e:
+                item = cls.objects.get(name=args[0])
 
-        items = list(item.descendants_get(**qkwargs))
-    else:
-        items = list(cls.objects.all())
+            items = list(item.descendants_get(**qkwargs))
+        else:
+            items = list(cls.objects.all())
+    except cls.DoesNotExist:
+        return ''
 
     if 'cmp' in kwargs:
         cmp = kwargs['cmp']

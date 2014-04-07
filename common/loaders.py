@@ -1,7 +1,7 @@
 from django.template.base import TemplateDoesNotExist
 from models import SiteTemplate, SiteTheme
 from thread_locals import get_current_site
-
+from django.template.loader import BaseLoader
 
 def load_template_source(template_name, template_dirs=None):
     site = get_current_site()
@@ -20,3 +20,13 @@ def load_template_source(template_name, template_dirs=None):
 
 
 load_template_source.is_usable = True
+
+class DBLoader(BaseLoader):
+    is_usable = True
+
+    def load_template_source(self, template_name, template_dirs=None):
+        return load_template_source(template_name, template_dirs=template_dirs)
+
+    load_template_source.is_usable = True
+
+
