@@ -53,7 +53,7 @@ class UserSiteManager(SiteManager):
 
 class UserDefaultManager(UserManager):
     def get_query_set(self):
-        return super(UserManager, self).get_query_set().filter(state=True)
+        return super(UserDefaultManager, self).get_query_set().filter(state=True)
 
 
 class UserSiteDefaultManager(UserSiteManager):
