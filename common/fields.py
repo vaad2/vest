@@ -1,4 +1,4 @@
-from django.db.models.fields.files import FieldFile
+# from django.db.models.fields.files import FieldFile
 from django.forms import  widgets
 from django.forms.widgets import ClearableFileInput, CheckboxInput, FILE_INPUT_CONTRADICTION
 
