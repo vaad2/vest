@@ -293,7 +293,7 @@ class MixinBase(View):
         return template_name_base
 
     def render_to_response(self, context, **response_kwargs):
-        context.update({'breadcrumbs': self.get_breadcrumbs,
+        context.update({'breadcrumbs': self.get_breadcrumbs(),
                         'template_name_base': self.get_template_name_base()})
 
         return self.response_class(
