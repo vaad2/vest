@@ -125,6 +125,10 @@ def default_context_init(context, *args, **kwargs):
     else:
         sub_context['qset'] = model_class_get(kwargs['cls']).objects.all()
 
+    if kwargs.get('is_active', False):
+        sub_context['qset'] = sub_context['qset'].filter(state=True)
+
+
     sub_context['args'] = args
     sub_context['kwargs'] = kwargs
     context[name] = sub_context
@@ -134,7 +138,9 @@ def default_context_init(context, *args, **kwargs):
 @register.simple_tag(takes_context=True)
 def tag_list(context, *args, **kwargs):
     default_context_init(context, *args, **kwargs)
-    context['tag_list']['qset'] = context['tag_list']['qset'][0:context['tag_list']['limit']]
+    offset = kwargs.get('offset', 0)
+
+    context['tag_list']['qset'] = context['tag_list']['qset'][0 + offset:context['tag_list']['limit'] + offset]
     return render_to_string(kwargs['template_name'], context)
 
 
