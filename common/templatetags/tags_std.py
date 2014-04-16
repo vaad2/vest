@@ -1,4 +1,5 @@
 from django import template
+from django.core.urlresolvers import reverse
 from django.template.base import Template
 from django.template.context import Context
 from django.template.loader import render_to_string
@@ -6,7 +7,7 @@ from django.template import Library, Node, TemplateSyntaxError
 from django.template.loaders.filesystem import Loader
 from common.consts import VEST_CURRENT_TREE
 from common.std import model_class_get
-from common.thread_locals import get_thread_var
+from common.thread_locals import get_thread_var, get_current_request
 import random
 from common.utags import utag_tree
 
@@ -168,3 +169,17 @@ def tag_tree(context, *args, **kwargs):
         kwargs['cls'] = 'frontend.Category'
 
     return utag_tree(context, *args, **kwargs)
+
+@register.simple_tag(takes_context=True)
+def tag_is_starts_with(context, *args, **kwargs):
+    request = get_current_request()
+
+    if ':' in args[0]:
+        url = reverse(args[0], args=args[1:], kwargs=kwargs)
+    else:
+        url = ''.join(args)
+
+    if request.path.startswith(url):
+        return kwargs.get('cls_active', 'active')
+
+    return kwargs.get('cls_default', '')
