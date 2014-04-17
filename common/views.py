@@ -14,7 +14,7 @@ from django.db.models.query import QuerySet
 from django.utils.safestring import mark_safe
 import math, json, urllib
 from django.utils.encoding import smart_str
-
+from http import ujson_response
 
 class ViewDefault(TemplateView):
     template_name = 'base.html'
@@ -320,7 +320,8 @@ class MixinBase(View):
         return [tn]
 
     def json_handler_get(self):
-        return json_mongo_response
+        #ahtung
+        return ujson_response
 
     def dispatch(self, request, *args, **kwargs):
         if 'pk' in request.REQUEST:
