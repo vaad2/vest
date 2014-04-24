@@ -50,6 +50,8 @@ class CacheTree(object):
         self.tree_map = {}
         self.tree_list = []
 
+        if not len(tree):
+            return None
         self.tree = tree
 
         prev_item = None

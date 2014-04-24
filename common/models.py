@@ -304,7 +304,9 @@ class BaseAbstractTree(AbstractUserSiteDefaultModel):
                 dic[parent_pk].update(dic[item.pk])
                 del (dic[item.pk])
 
-        return dic.popitem()[1].values()
+        if len(dic):
+            return dic.popitem()[1].values()
+        return []
 
     @classmethod
     def path_update(cls):
